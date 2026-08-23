@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#08131c">
+<title>PARTY SUGOROKU DELUXE</title>
+<style>
+:root{
+  --bg:#08131c;--panel:#0d1c27;--panel2:#152a38;--line:#38566a;--text:#f5f8fa;
+  --muted:#9bb3c1;--gold:#d2a83c;--orange:#d06f2e;--blue:#2e7eb0;--green:#3f865d;--red:#a84a46;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:radial-gradient(circle at 50% -10%,#18364b,#08131c 55%);color:var(--text);
+font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;-webkit-text-size-adjust:100%}
+body{min-height:100vh;padding:10px;overscroll-behavior:none}
+button,input{font:inherit}
+button{border:0;border-radius:12px;min-height:44px;padding:10px 12px;font-weight:900;color:#fff;background:linear-gradient(#3386b7,#22628a);box-shadow:0 4px 0 #133a53;touch-action:manipulation}
+button:active{transform:translateY(2px);box-shadow:0 2px 0 #133a53}
+button:disabled{opacity:.4}
+.orange{background:linear-gradient(#e28739,#b7501e);box-shadow:0 4px 0 #6d2d12}
+.green{background:linear-gradient(#4f9c70,#326848);box-shadow:0 4px 0 #1d3d2a}
+.ghost{background:linear-gradient(#243c4d,#162936);box-shadow:0 4px 0 #0a1820}
+.wrap{max-width:1080px;margin:auto}
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#173c57,#1a5c77);border:1px solid #47758e;border-radius:22px;padding:16px;box-shadow:0 15px 32px #0006}
+.hero:after{content:"";position:absolute;inset:-50%;background:linear-gradient(115deg,transparent 42%,#ffffff10 48%,transparent 54%);animation:heroShine 7s linear infinite}
+@keyframes heroShine{to{transform:translateX(38%)}}
+.hero h1{position:relative;z-index:1;margin:0;font-size:clamp(24px,5vw,42px);font-weight:1000;letter-spacing:.025em}
+.hero p{position:relative;z-index:1;margin:5px 0 0;color:#d2e1e9;font-size:12px;font-weight:700}
+.soundbar{position:relative;z-index:2;display:flex;justify-content:flex-end;margin-top:8px}
+.soundbar button{min-height:35px;padding:6px 10px;font-size:10px}
+.grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:12px}
+.card{background:linear-gradient(180deg,#152d3d,#0d1e2a);border:1px solid var(--line);border-radius:18px;padding:13px;box-shadow:0 12px 26px #0004}
+.card h2{font-size:15px;margin:0 0 8px}
+.sub{font-size:10px;color:var(--muted)}
+.hide{display:none!important}
+input{width:100%;min-height:44px;border-radius:11px;border:1px solid #456276;background:#09151e;color:#fff;padding:9px 10px;font-size:16px}
+.startCard{text-align:center;padding:20px}
+.startCard h2{font-size:21px;letter-spacing:.08em}
+.vanShowcase{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.showVan{background:#0a1822;border:1px solid #3b5a6d;border-radius:13px;padding:9px;text-align:center;font-size:9px;font-weight:900}
+.vanSvg{display:block;width:76px;height:46px;margin:auto}
+.hud{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
+.status{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.rankGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.rank{background:#091722;border:1px solid #345063;border-radius:11px;padding:6px;font-size:9px;min-width:0}
+.rank.active{outline:2px solid #dda346}
+.rank b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rankMeta{color:#9eb4c1;margin-top:2px}
+.boardWrap{position:relative;margin-top:10px;border-radius:24px;overflow:hidden;border:1px solid #5d7e90;box-shadow:0 24px 55px #000a,inset 0 0 80px #0007;background:#234b3b}
+.board{display:block;width:100%;height:auto}
+.boardWrap:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#ffffff08 0,transparent 30%,#00000038 100%);z-index:8}
+.banner{position:absolute;left:50%;top:18px;transform:translateX(-50%);z-index:20;background:#071521e9;border:1px solid #6389a0;border-radius:14px;padding:8px 12px;font-size:12px;font-weight:1000;opacity:0;transition:.2s}
+.banner.on{opacity:1}
+.resultFx{position:absolute;inset:0;display:grid;place-items:center;z-index:19;pointer-events:none;opacity:0}
+.resultFx.on{animation:fxFade 1s ease}
+.resultFx span{font-size:clamp(72px,20vw,140px);font-weight:1000;text-shadow:0 0 20px #ffd36f,0 14px 40px #000}
+.resultFx.on span{animation:fxPop 1s ease}
+@keyframes fxFade{15%,72%{opacity:1}100%{opacity:0}}
+@keyframes fxPop{0%{transform:scale(.45) rotate(-10deg)}45%{transform:scale(1.2) rotate(4deg)}100%{transform:scale(1)}}
+.diceDock{margin-top:10px;display:grid;grid-template-columns:1fr 66px 130px;gap:10px;align-items:center;background:linear-gradient(#102839,#091923);border:1px solid #426176;border-radius:16px;padding:9px;box-shadow:0 10px 24px #0005}
+.die{width:58px;height:58px;border-radius:13px;background:linear-gradient(145deg,#fff,#cbd3d6);display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:8px;gap:4px;box-shadow:inset 5px 5px 9px #fff,inset -5px -5px 9px #9fa8ad,0 5px 0 #7c898f}
+.pip{background:#142029;border-radius:50%}
+.diceDock.rolling .die{animation:diceRoll .17s linear infinite}
+@keyframes diceRoll{0%{transform:rotate(-9deg) scale(.94)}50%{transform:rotate(10deg) scale(1.08)}100%{transform:rotate(-9deg) scale(.94)}}
+.bottom{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+.items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.itemBtn{background:linear-gradient(#183248,#102334);box-shadow:0 3px 0 #07131c;min-height:58px;font-size:9px;padding:6px}
+.itemBtn.available{outline:1px solid #5b8299}
+.log{max-height:160px;overflow:auto;background:#07131c;border-radius:10px;padding:8px;font-size:10px;line-height:1.55;color:#c7d8e2}
+.overlay{position:absolute;inset:0;z-index:35;background:#020a10e8;display:flex;align-items:center;justify-content:center;padding:13px}
+.modal{width:min(460px,100%);background:linear-gradient(#19374a,#0d202d);border:1px solid #55768b;border-radius:20px;padding:15px;text-align:center;box-shadow:0 22px 55px #000b;animation:modalIn .18s ease}
+@keyframes modalIn{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+.modal h2{margin:0 0 7px}
+.modal p{font-size:11px;color:#bed0da}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.track{height:20px;border-radius:999px;overflow:hidden;background:#07141d;border:1px solid #365064;margin:10px 0;position:relative}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#3e94bd,#d6aa45)}
+.big{font-size:48px;font-weight:1000;color:#efca62;margin:8px}
+.result{display:grid;gap:5px;margin-top:10px}
+.rr{display:flex;justify-content:space-between;background:#081824;border-radius:9px;padding:7px;font-size:11px}
+.winner{text-align:center;margin-top:12px}
+@media(min-width:820px){
+ .grid{grid-template-columns:1.05fr .95fr}
+ .hud{grid-template-columns:.8fr 1.2fr}
+ .rankGrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .bottom{grid-template-columns:1fr 1fr}
+ .items{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <h1>PARTY SUGOROKU DELUXE</h1>
+  <p>軽バンで街を駆け抜けろ。スター3個でゴール解放。</p>
+  <div class="soundbar"><button id="soundToggle" class="ghost">BGM START</button></div>
+</header>
+
+<section id="lobby" class="grid">
+  <div class="card startCard">
+    <h2>QUICK PLAY</h2>
+    <p class="sub">1人＋CPU3人ですぐ遊べます</p>
+    <input id="playerName" value="あなた" maxlength="10">
+    <button id="startGame" class="orange" style="margin-top:9px;width:100%">ゲーム開始</button>
+  </div>
+  <div class="card">
+    <h2>4 VAN BATTLE</h2>
+    <div id="showcase" class="vanShowcase"></div>
+    <p class="sub">この版はオフライン版。オンライン対戦はゲーム本体完成後に追加予定。</p>
+  </div>
+</section>
+
+<section id="game" class="hide">
+  <div class="hud">
+    <div class="card status">
+      <div>
+        <b id="turnText"></b>
+        <div id="roundText" class="sub"></div>
+      </div>
+      <button id="soundToggle2" class="ghost">SOUND</button>
+    </div>
+    <div class="card">
+      <h2>順位</h2>
+      <div id="rankGrid" class="rankGrid"></div>
+    </div>
+  </div>
+
+  <div id="boardWrap" class="boardWrap">
+    <svg id="board" class="board" viewBox="0 0 1000 700">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#699fb9"/><stop offset=".48" stop-color="#b8d5df"/><stop offset="1" stop-color="#d8e1d8"/></linearGradient>
+        <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#688c5a"/><stop offset="1" stop-color="#34513c"/></linearGradient>
+        <linearGradient id="water" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#245a77"/><stop offset=".5" stop-color="#72b9d2"/><stop offset="1" stop-color="#2d6480"/></linearGradient>
+        <filter id="shadow"><feDropShadow dx="0" dy="7" stdDeviation="5" flood-opacity=".32"/></filter>
+        <filter id="tokenShadow"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-opacity=".48"/></filter>
+      </defs>
+      <rect width="1000" height="700" fill="url(#sky)"/>
+      <circle cx="835" cy="84" r="48" fill="#e9d17c"/>
+      <path d="M0 220Q120 135 250 200T500 185T760 205T1000 190V700H0Z" fill="#54764e"/>
+      <path d="M0 290Q150 215 300 270T620 260T1000 290V700H0Z" fill="url(#grass)"/>
+      <path d="M455 80C390 200 505 285 448 390C400 478 470 555 435 700H615C625 550 540 485 595 390C660 280 555 190 620 80Z" fill="url(#water)"/>
+      <g id="city"></g>
+      <g id="roadLayer"></g>
+      <g id="tiles"></g>
+      <g id="tokens"></g>
+    </svg>
+    <div id="banner" class="banner"></div>
+    <div id="resultFx" class="resultFx"><span></span></div>
+    <div id="overlay"></div>
+  </div>
+
+  <div id="diceDock" class="diceDock">
+    <div><b id="diceTitle"></b><div class="sub">サイコロを振る</div></div>
+    <div id="die" class="die"></div>
+    <button id="rollBtn" class="orange">サイコロ</button>
+  </div>
+
+  <div class="bottom">
+    <div class="card">
+      <h2>アイテム</h2>
+      <div id="items" class="items"></div>
+    </div>
+    <div class="card">
+      <h2>ゲームログ</h2>
+      <div id="log" class="log"></div>
+    </div>
+  </div>
+</section>
+
+<section id="winner" class="card hide winner">
+  <h2 id="winnerText"></h2>
+  <button id="again" class="green">もう一度遊ぶ</button>
+</section>
+</div>
+
+<script>
+(()=>{
+'use strict';
+const $=q=>document.querySelector(q);
+const colors=['#c44242','#2e73b8','#378b5e','#b58a29'];
+const N=38;
+const coords=[
+[75,560],[126,580],[184,578],[240,554],[288,520],[330,480],[360,435],[380,388],[373,340],[345,294],
+[312,254],[298,211],[318,170],[365,142],[418,136],[468,150],[512,177],[556,205],[608,224],[663,225],
+[713,208],[756,180],[795,150],[838,144],[876,165],[900,202],[901,246],[882,286],[850,323],[812,357],
+[785,402],[783,451],[805,496],[842,534],[885,566],[922,585],[952,565],[965,520]
+];
+const special={3:'item',6:'star',9:'battle',12:'event',15:'item',18:'star',21:'battle',24:'event',27:'item',30:'star',33:'battle',35:'event'};
+const itemDefs={boost:'加速+3',back:'先頭-3',warp:'ワープ',shield:'防御'};
+const itemKeys=Object.keys(itemDefs);
+let S=null,busy=false,lastMini=0;
+const r=n=>Math.floor(Math.random()*n);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+// AUDIO
+let AC=null,master=null,bgmTimer=null,bgmMode='',bgmStep=0,soundOn=true;
+function ensureAudio(){
+  try{
+    if(!AC){
+      const A=window.AudioContext||window.webkitAudioContext;
+      if(!A)return false;
+      AC=new A();master=AC.createGain();master.gain.value=.17;master.connect(AC.destination);
+    }
+    if(AC.state==='suspended')AC.resume();
+    return true;
+  }catch(e){return false}
+}
+function tone(f,d=.1,type='sine',vol=.08,delay=0){
+  if(!soundOn||!ensureAudio())return;
+  const o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime+delay;
+  o.type=type;o.frequency.setValueAtTime(f,t);
+  g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(g);g.connect(master);o.start(t);o.stop(t+d+.02);
+}
+const BGM={
+ board:[[261.6,329.6,392],[293.7,349.2,440],[246.9,329.6,392],[220,293.7,349.2]],
+ mini:[[392,493.9,587.3],[440,523.3,659.3],[349.2,440,523.3],[392,493.9,587.3]],
+ final:[[220,261.6,329.6],[196,246.9,293.7],[233.1,293.7,349.2],[174.6,220,261.6]]
+};
+function playStep(){
+  if(!soundOn||!AC||!bgmMode)return;
+  const c=BGM[bgmMode][bgmStep%4],root=c[0];
+  c.forEach((f,i)=>tone(f,.28,'triangle',.028,i*.012));
+  tone(root/2,.24,'sine',.045);
+  tone(c[(bgmStep+1)%3]*2,.08,'sine',.015,.16);
+  bgmStep++;
+}
+function startBgm(mode='board'){
+  if(!soundOn||!ensureAudio())return;
+  if(bgmMode===mode&&bgmTimer)return;
+  stopBgm();bgmMode=mode;bgmStep=0;playStep();bgmTimer=setInterval(playStep,360);
+  $('#soundToggle').textContent='BGM ON';
+}
+function stopBgm(){if(bgmTimer)clearInterval(bgmTimer);bgmTimer=null;bgmMode=''}
+function sfx(n){
+  if(n==='dice'){tone(180,.04,'square',.045);tone(260,.04,'square',.035,.03)}
+  if(n==='move')tone(145,.035,'triangle',.03);
+  if(n==='item'){tone(523,.07,'sine',.08);tone(659,.1,'sine',.075,.06)}
+  if(n==='star'){[523,659,784].forEach((f,i)=>tone(f,.12,'triangle',.09,i*.08))}
+  if(n==='battle'){tone(130,.12,'sawtooth',.075);tone(95,.16,'sawtooth',.06,.07)}
+  if(n==='mini'){tone(392,.07,'square',.045);tone(523,.08,'square',.045,.08)}
+  if(n==='win'){[523,659,784,1046].forEach((f,i)=>tone(f,.22,'triangle',.09,i*.09))}
+}
+function toggleSound(){
+  if(!soundOn){soundOn=true;startBgm(S?'board':'board')}
+  else{soundOn=false;stopBgm();$('#soundToggle').textContent='BGM OFF'}
+}
+
+// VISUALS
+function vanSvg(c){
+ return `<svg class="vanSvg" viewBox="0 0 140 84">
+ <defs><linearGradient id="vg${c.replace('#','')}" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff" stop-opacity=".3"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></linearGradient></defs>
+ <ellipse cx="72" cy="70" rx="50" ry="7" fill="#000" opacity=".28"/>
+ <rect x="18" y="22" width="88" height="43" rx="9" fill="${c}"/>
+ <path d="M106 33h12l13 17v15h-29z" fill="${c}"/>
+ <rect x="28" y="29" width="29" height="17" rx="3" fill="#8fc3dc"/>
+ <rect x="62" y="29" width="27" height="17" rx="3" fill="#8fc3dc"/>
+ <path d="M20 24h84v38H20z" fill="url(#vg${c.replace('#','')})"/>
+ <rect x="26" y="51" width="70" height="4" rx="2" fill="#d5dee3" opacity=".8"/>
+ <circle cx="38" cy="66" r="11" fill="#11171b"/><circle cx="106" cy="66" r="11" fill="#11171b"/>
+ <circle cx="38" cy="66" r="5" fill="#a6b2b8"/><circle cx="106" cy="66" r="5" fill="#a6b2b8"/>
+ <rect x="119" y="48" width="8" height="7" rx="2" fill="#fff2a3"/>
+ </svg>`;
+}
+function buildCity(){
+ const g=$('#city');g.innerHTML='';
+ const blds=[[55,110,100,82],[785,90,110,96],[70,470,112,76],[795,455,120,80],[185,105,72,58],[675,490,88,62]];
+ blds.forEach(([x,y,w,h],i)=>{
+  g.insertAdjacentHTML('beforeend',`<g transform="translate(${x} ${y})" filter="url(#shadow)">
+   <rect width="${w}" height="${h}" rx="6" fill="${i%2?'#405867':'#b5a67f'}"/>
+   <path d="M-8 9L${w/2} -28L${w+8} 9Z" fill="${i%2?'#263b48':'#654c39'}"/>
+   <g fill="#f3d679" opacity=".75">
+    <rect x="12" y="18" width="13" height="10"/><rect x="${w-30}" y="18" width="13" height="10"/>
+    <rect x="12" y="39" width="13" height="10"/><rect x="${w-30}" y="39" width="13" height="10"/>
+   </g>
+  </g>`);
+ });
+ const trees=[[45,330],[105,360],[190,395],[245,325],[680,110],[725,120],[920,320],[875,380],[625,560],[145,210]];
+ trees.forEach(([x,y],i)=>{
+  let q=22+i%3*5;
+  g.insertAdjacentHTML('beforeend',`<g transform="translate(${x} ${y})" filter="url(#shadow)"><rect x="-4" y="9" width="8" height="23" fill="#5e4130"/><circle r="${q}" fill="#2b5237"/><circle cx="${-q*.45}" cy="8" r="${q*.58}" fill="#3b6b45"/><circle cx="${q*.45}" cy="7" r="${q*.5}" fill="#23462f"/></g>`);
+ });
+ [[150,300],[310,105],[720,315],[890,445],[570,570]].forEach(([x,y])=>{
+   g.insertAdjacentHTML('beforeend',`<g transform="translate(${x} ${y})"><rect x="-2" y="0" width="4" height="39" fill="#1b2b32"/><circle cy="-3" r="7" fill="#ffe49b"/><circle cy="-3" r="18" fill="#ffd768" opacity=".15"/></g>`)
+ });
+ g.insertAdjacentHTML('beforeend',`<g filter="url(#shadow)"><rect x="410" y="325" width="230" height="48" rx="8" fill="#5e4d3b"/><rect x="422" y="312" width="206" height="38" rx="6" fill="#a7835a"/><g stroke="#51402f" stroke-width="4">${[446,482,518,554,590,616].map(x=>`<line x1="${x}" y1="314" x2="${x}" y2="348"/>`).join('')}</g></g>`);
+}
+function drawRoad(){
+ let d='M '+coords.map(x=>x.join(' ')).join(' L ');
+ $('#roadLayer').innerHTML=`<path d="${d}" fill="none" stroke="#2f3438" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" filter="url(#shadow)"/><path d="${d}" fill="none" stroke="#d6be77" stroke-width="3" stroke-dasharray="8 12" opacity=".85"/>`;
+}
+function tileColors(t){
+ return {normal:['#506778','#1f303b'],start:['#d3aa3f','#6e5320'],goal:['#c9672d','#713616'],item:['#347ea3','#1b4a64'],star:['#d2aa3e','#72561d'],battle:['#a74b47','#612b29'],event:['#72568f','#47365c']}[t]||['#506778','#1f303b'];
+}
+function drawBoard(){
+ const a=$('#tiles'),b=$('#tokens');a.innerHTML=b.innerHTML='';
+ for(let i=0;i<N;i++){
+   const t=i===0?'start':i===N-1?'goal':special[i]||'normal',[top,side]=tileColors(t),[x,y]=coords[i];
+   const label=i===0?'START':i===N-1?'GOAL':({item:'ITEM',star:'STAR',battle:'BATTLE',event:'EVENT'}[t]||'');
+   a.insertAdjacentHTML('beforeend',`<g transform="translate(${x} ${y})" filter="url(#shadow)">
+    <rect x="-25" y="-10" width="50" height="38" rx="10" fill="${side}"/>
+    <rect x="-25" y="-22" width="50" height="38" rx="10" fill="${top}" stroke="#dceaf1" stroke-opacity=".8"/>
+    <path d="M-16 -15H16" stroke="#fff" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+    <text x="0" y="-1" text-anchor="middle" font-size="8" font-weight="900" fill="#fff">${label}</text>
+   </g>`);
+ }
+ if(!S)return;
+ S.p.forEach((p,i)=>{
+   const [x,y]=coords[p.pos],off=[[-13,-5],[13,-5],[-13,12],[13,12]][i];
+   b.insertAdjacentHTML('beforeend',`<g transform="translate(${x+off[0]} ${y+off[1]})" filter="url(#tokenShadow)">
+    <ellipse cx="2" cy="10" rx="19" ry="5" fill="#000" opacity=".35"/>
+    <rect x="-18" y="-10" width="29" height="18" rx="5" fill="${colors[i]}"/>
+    <path d="M11-6h8l8 9v5H9z" fill="${colors[i]}"/>
+    <rect x="-12" y="-7" width="9" height="6" rx="1" fill="#a9d7e9"/><rect x="-1" y="-7" width="8" height="6" rx="1" fill="#a9d7e9"/>
+    <circle cx="-9" cy="9" r="5" fill="#0d1114"/><circle cx="16" cy="9" r="5" fill="#0d1114"/>
+    <circle cx="-9" cy="9" r="2" fill="#a9b2b7"/><circle cx="16" cy="9" r="2" fill="#a9b2b7"/>
+   </g>`);
+ });
+}
+function drawDie(n){
+ const map={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]},d=$('#die');d.innerHTML='';
+ for(let i=0;i<9;i++){const s=document.createElement('span');if(map[n].includes(i))s.className='pip';d.appendChild(s)}
+}
+function banner(t,ms=1000){const b=$('#banner');b.textContent=t;b.classList.add('on');setTimeout(()=>b.classList.remove('on'),ms)}
+function resultFx(n){const f=$('#resultFx');f.querySelector('span').textContent=n;f.classList.remove('on');void f.offsetWidth;f.classList.add('on')}
+function log(t){const d=document.createElement('div');d.textContent='・'+t;$('#log').prepend(d)}
+function order(){return S.p.map((p,i)=>({p,i})).sort((a,b)=>b.p.pos-a.p.pos||b.p.stars-a.p.stars)}
+function hud(){
+ const p=S.p[S.turn],o=order(),box=$('#rankGrid');box.innerHTML='';
+ S.p.forEach((q,i)=>{
+  const d=document.createElement('div');d.className='rank'+(i===S.turn?' active':'');
+  d.innerHTML=`<b>${i+1}P ${q.name}</b><div class="rankMeta">${o.findIndex(x=>x.i===i)+1}位 / ${q.pos}マス / STAR ${q.stars}/3</div>`;
+  box.appendChild(d);
+ });
+ $('#turnText').textContent=`${S.turn+1}P ${p.name}のターン`;
+ $('#roundText').textContent=`全体ターン ${S.count} / 5ターンごとにミニゲーム`;
+ $('#diceTitle').textContent=p.name;
+ $('#rollBtn').disabled=busy||p.cpu;
+ renderItems();
+ if(soundOn&&bgmMode!=='mini'){
+  const final=S.p.some(x=>x.pos>=29&&x.stars>=3);startBgm(final?'final':'board');
+ }
+}
+function renderItems(){
+ const box=$('#items'),p=S.p[0];box.innerHTML='';
+ itemKeys.forEach(k=>{
+  const n=p.items.filter(x=>x===k).length,b=document.createElement('button');
+  b.className='itemBtn'+(n?' available':'');b.disabled=!n||S.turn!==0||busy;
+  b.innerHTML=`<b>${itemDefs[k]}</b><br>${n}個`;b.onclick=()=>useItem(0,k);box.appendChild(b);
+ });
+}
+function giveItem(p){if(p.items.length>=4)return;const k=itemKeys[r(itemKeys.length)];p.items.push(k);log(`${p.name} ${itemDefs[k]}入手`);sfx('item');banner('ITEM GET')}
+function giveStar(p){if(p.stars<3){p.stars++;log(`${p.name} STAR ${p.stars}/3`);sfx('star');banner('STAR GET',1300)}else giveItem(p)}
+function attack(i,n,label){const q=S.p[i];if(q.shield){q.shield--;log(`${q.name}が防御`)}else{q.pos=clamp(q.pos-n,0,N-1);log(`${label} ${q.name}-${n}`)}drawBoard()}
+function useItem(i,k){
+ const p=S.p[i],idx=p.items.indexOf(k);if(idx<0)return;p.items.splice(idx,1);
+ const lead=order().find(x=>x.i!==i);
+ if(k==='boost')p.boost+=3;
+ if(k==='warp')p.pos=clamp(p.pos+4+r(4),0,N-1);
+ if(k==='shield')p.shield++;
+ if(k==='back'&&lead)attack(lead.i,3,`${p.name}の妨害`);
+ log(`${p.name} ${itemDefs[k]}使用`);drawBoard();hud();
+}
+function cpuUse(i){
+ const p=S.p[i];let k=null;
+ if(p.items.includes('warp')&&Math.random()<.45)k='warp';
+ else if(p.items.includes('back')&&Math.random()<.30)k='back';
+ else if(p.items.includes('shield')&&!p.shield&&Math.random()<.30)k='shield';
+ if(k)useItem(i,k);
+}
+function overlay(h){$('#overlay').innerHTML=`<div class="overlay"><div class="modal">${h}</div></div>`;return $('#overlay .modal')}
+function closeOverlay(){$('#overlay').innerHTML=''}
+function cpuScore(){const x=Math.random();if(x<.18)return 15+r(18);if(x>.94)return 78+r(13);return 31+r(40)}
+function award(sc,done,label){
+ const o=sc.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v),m=$('#overlay .modal');
+ giveStar(S.p[o[0].i]);giveItem(S.p[o[1].i]);
+ const box=document.createElement('div');box.className='result';box.innerHTML=o.map((x,k)=>`<div class="rr"><span>${k+1}位 ${S.p[x.i].name}</span><b>${Math.round(x.v)}</b></div>`).join('');m.appendChild(box);
+ const n=document.createElement('div');n.className='sub';n.style.marginTop='10px';n.textContent='まもなく盤面に戻ります';m.appendChild(n);
+ banner(label);setTimeout(()=>{closeOverlay();busy=false;startBgm('board');drawBoard();hud();setTimeout(done,180)},1900);
+}
+function mini(done){
+ busy=true;sfx('mini');startBgm('mini');hud();
+ const t=r(6);if(t===0)return timing(done);if(t===1)return reaction(done);if(t===2)return numberGame(done);if(t===3)return memoryGame(done);if(t===4)return parking(done);lane(done);
+}
+function timing(done){
+ const m=overlay('<h2>タイミングストップ</h2><p>中央を狙って止めろ。</p><div class="track"><div id="f" class="fill"></div></div><button id="stop" class="orange">STOP</button>');
+ let v=0,d=1,z=setInterval(()=>{v+=d*3;if(v>=100){v=100;d=-1}if(v<=0){v=0;d=1}$('#f').style.width=v+'%'},35);
+ $('#stop').onclick=()=>{clearInterval(z);$('#stop').disabled=true;award([100-Math.abs(50-v)*2,cpuScore(),cpuScore(),cpuScore()],done,'TIMING')};
+}
+function reaction(done){
+ const m=overlay('<h2>反射神経</h2><p>GOが出たら押せ。</p><div id="rt" class="big">WAIT</div><button id="rb" class="orange">押す</button>');
+ let ready=false,st=0,fin=false,z=setTimeout(()=>{ready=true;st=performance.now();$('#rt').textContent='GO'},900+r(1500));
+ $('#rb').onclick=()=>{if(fin)return;fin=true;clearTimeout(z);const me=ready?Math.max(1,120-(performance.now()-st)/4):0;$('#rb').disabled=true;$('#rt').textContent=ready?Math.round(performance.now()-st)+'ms':'EARLY';setTimeout(()=>award([me,cpuScore(),cpuScore(),cpuScore()],done,'REACTION'),400)};
+}
+function numberGame(done){
+ const ans=1+r(9),m=overlay(`<h2>数字当て</h2><p>正解に近いほど高得点。</p><div class="big">?</div><div class="actions"><button data-n="2">2</button><button data-n="4">4</button><button data-n="6">6</button><button data-n="8">8</button></div>`);
+ m.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{const n=+b.dataset.n;m.querySelector('.big').textContent=ans;m.querySelectorAll('button').forEach(x=>x.disabled=true);setTimeout(()=>award([Math.max(0,100-Math.abs(ans-n)*20),cpuScore(),cpuScore(),cpuScore()],done,'NUMBER'),400)});
+}
+function memoryGame(done){
+ const seq=Array.from({length:4},()=>1+r(4)),m=overlay('<h2>記憶ゲーム</h2><p>4つの数字を覚えろ。</p><div id="ms" class="big">READY</div><div class="actions" style="grid-template-columns:repeat(4,1fr)"><button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k="4">4</button></div>');
+ const keys=m.querySelectorAll('[data-k]');let i=0,en=[];keys.forEach(b=>b.disabled=true);
+ const z=setInterval(()=>{if(i<4)$('#ms').textContent=seq[i++];else{clearInterval(z);$('#ms').textContent='GO';keys.forEach(b=>b.disabled=false)}},600);
+ keys.forEach(b=>b.onclick=()=>{en.push(+b.dataset.k);$('#ms').textContent=en.join(' ');if(en.length===4){keys.forEach(x=>x.disabled=true);const ok=en.filter((x,j)=>x===seq[j]).length;setTimeout(()=>award([ok*25,cpuScore(),cpuScore(),cpuScore()],done,'MEMORY'),400)}});
+}
+function parking(done){
+ const m=overlay('<h2>駐車チャレンジ</h2><p>緑ゾーンの中央で止めろ。</p><div class="track"><div style="position:absolute;left:42%;width:16%;height:100%;background:#4b9a68"></div><div id="pk" style="position:absolute;width:6px;height:100%;background:#fff;left:0"></div></div><button id="ps" class="orange">STOP</button>');
+ let v=0,d=1,z=setInterval(()=>{v+=d*2.7;if(v>=100){v=100;d=-1}if(v<=0){v=0;d=1}$('#pk').style.left=`calc(${v}% - 3px)`},30);
+ $('#ps').onclick=()=>{clearInterval(z);$('#ps').disabled=true;setTimeout(()=>award([Math.max(0,100-Math.abs(50-v)*4),cpuScore(),cpuScore(),cpuScore()],done,'PARKING'),350)};
+}
+function lane(done){
+ const good=r(3),m=overlay('<h2>レーン選択</h2><p>安全な道を選べ。</p><div class="actions" style="grid-template-columns:repeat(3,1fr)"><button data-l="0">LEFT</button><button data-l="1">CENTER</button><button data-l="2">RIGHT</button></div>');
+ m.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{const hit=+b.dataset.l===good;m.querySelectorAll('button').forEach(x=>x.disabled=true);b.textContent=hit?'CLEAR':'BLOCK';setTimeout(()=>award([hit?100:30+r(20),cpuScore(),cpuScore(),cpuScore()],done,'LANE'),350)});
+}
+function battle(i,done){
+ sfx('battle');const p=S.p[i],q=order().find(x=>x.i!==i);
+ if(p.cpu){Math.random()<.55?attack(q.i,3,`${p.name}勝利`):attack(i,2,`${q.p.name}反撃`);return done()}
+ const m=overlay('<h2>バトル</h2><p>中央を狙って止めろ。</p><div class="track"><div id="bf" class="fill"></div></div><button id="bs" class="orange">STOP</button>');
+ let v=0,d=1,z=setInterval(()=>{v+=d*4;if(v>=100){v=100;d=-1}if(v<=0){v=0;d=1}$('#bf').style.width=v+'%'},45);
+ $('#bs').onclick=()=>{clearInterval(z);100-Math.abs(50-v)*2>=40+r(50)?attack(q.i,3,`${p.name}勝利`):attack(i,2,`${q.p.name}反撃`);closeOverlay();done()};
+}
+function eventTile(done){
+ const e=r(3);
+ if(e===0){S.p.forEach(p=>p.pos=Math.max(0,p.pos-2));log('大雨で全員-2')}
+ else if(e===1){const q=order().at(-1);q.p.pos=Math.min(N-1,q.p.pos+5);log(`${q.p.name} 逆転+5`)}
+ else S.p.forEach(giveItem);
+ banner('MAP EVENT');drawBoard();setTimeout(done,550);
+}
+function resolveTile(i,done){
+ const p=S.p[i],t=special[p.pos];if(!t)return done();
+ if(t==='item'){giveItem(p);return done()}
+ if(t==='star'){giveStar(p);return done()}
+ if(t==='battle')return battle(i,done);
+ if(t==='event')return eventTile(done);
+ done();
+}
+function goal(i){
+ const p=S.p[i];if(p.pos<N-1)return false;
+ if(p.stars>=3){$('#game').classList.add('hide');$('#winner').classList.remove('hide');$('#winnerText').textContent=p.name+'の勝ち！';sfx('win');stopBgm();busy=false;return true}
+ p.pos=N-3;log(`${p.name} STAR不足`);banner('STAR 3個必要');drawBoard();return false;
+}
+function nextTurn(){
+ if(S.count>1&&S.count%5===0&&lastMini!==S.count){lastMini=S.count;return mini(advance)}
+ advance();
+ function advance(){
+  S.turn=(S.turn+1)%4;S.count++;busy=false;hud();
+  const p=S.p[S.turn];
+  if(p.cpu){banner(`${p.name} 考え中`);cpuUse(S.turn);setTimeout(rollDice,1100)}
+ }
+}
+function rollDice(){
+ if(busy)return;
+ const p=S.p[S.turn];busy=true;hud();$('#diceDock').classList.add('rolling');
+ let c=0,z=setInterval(()=>{drawDie(1+r(6));sfx('dice');if(++c>=9){
+  clearInterval(z);$('#diceDock').classList.remove('rolling');
+  let n=1+r(6);if(p.boost){n+=p.boost;p.boost=0}
+  drawDie(Math.min(6,n));resultFx(n);banner('DICE '+n);log(`${p.name} ${n}`);
+  setTimeout(()=>{
+   const target=Math.min(N-1,p.pos+n);
+   const step=()=>{
+    if(p.pos>=target){
+      if(goal(S.turn))return;
+      return resolveTile(S.turn,()=>{if(goal(S.turn))return;busy=false;hud();setTimeout(nextTurn,800)});
+    }
+    p.pos++;sfx('move');drawBoard();setTimeout(step,190);
+   };
+   step();
+  },700);
+ }},70);
+}
+
+function startGame(){
+ ensureAudio();startBgm('board');
+ const name=$('#playerName').value.trim()||'あなた';
+ S={turn:0,count:1,p:[0,1,2,3].map(i=>({name:i?`CPU ${i+1}`:name,cpu:i>0,pos:0,stars:0,items:[],shield:0,boost:0}))};
+ lastMini=0;busy=false;$('#lobby').classList.add('hide');$('#game').classList.remove('hide');$('#winner').classList.add('hide');$('#log').innerHTML='';
+ drawBoard();hud();log('ゲーム開始');banner('GAME START');
+}
+$('#startGame').onclick=startGame;
+$('#rollBtn').onclick=()=>{ensureAudio();startBgm('board');rollDice()};
+$('#soundToggle').onclick=toggleSound;$('#soundToggle2').onclick=toggleSound;
+$('#again').onclick=()=>{$('#winner').classList.add('hide');$('#lobby').classList.remove('hide');S=null;stopBgm();drawBoard()};
+document.addEventListener('pointerdown',()=>{ensureAudio()},{once:true});
+document.addEventListener('touchend',()=>{ensureAudio()},{once:true});
+document.addEventListener('dblclick',e=>e.preventDefault(),{passive:false});
+document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
+
+buildCity();drawRoad();drawDie(5);drawBoard();
+const show=$('#showcase');
+colors.forEach((c,i)=>{const d=document.createElement('div');d.className='showVan';d.innerHTML=vanSvg(c)+`<div>${['RED','BLUE','GREEN','GOLD'][i]} VAN</div>`;show.appendChild(d)});
+})();
+</script>
+</body>
+</html>
